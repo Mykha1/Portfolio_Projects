@@ -3,8 +3,30 @@ import telebot
 import speech_recognition
 from pydub import AudioSegment
 from telebot import TeleBot
+from telebot import types
 
 bot: TeleBot = telebot.TeleBot('6882568785:AAHBw7yRGNTa_7COC5xT4nrYbfepvfJwD_A')
+
+
+@bot.message_handler(commands=['start'])
+def greeting(message):
+    markup = types.InlineKeyboardMarkup()
+    markup.add(types.InlineKeyboardButton('What can you do?', callback_data='my_skills' ))
+    greet_text = f"Hello, {message.from_user.first_name}! \nHow can I help you?"
+    bot.send_message(message.chat.id, greet_text, reply_markup=markup)
+
+
+@bot.callback_query_handler(func=lambda call: call.data == 'my_skills')
+def handle_skills(callback_query):
+    bot.answer_callback_query(callback_query.id)
+    bot.send_message(callback_query.message.chat.id, 'I can help you with speech recognition!')
+
+
+@bot.message_handler(content_types=['voice'])
+def transcript(message):
+    filename = download_file(bot, message.voice.file_id)
+    text = recognize_speech(filename)
+    bot.send_message(message.chat.id, text)
 
 
 def oga2wav(filename):
@@ -45,19 +67,6 @@ def download_file(bot, file_id):
     with open(filename, 'wb') as f:
         f.write(downloaded_file)
     return filename
-
-
-@bot.message_handler(commands=['start'])
-def greeting(message):
-    greet_text = f'Hello, {message.from_user.first_name}! How can I help you?'
-    bot.send_message(message.chat.id, greet_text)
-
-
-@bot.message_handler(content_types=['voice'])
-def transcript(message):
-    filename = download_file(bot, message.voice.file_id)
-    text = recognize_speech(filename)
-    bot.send_message(message.chat.id, text)
 
 
 bot.polling()
