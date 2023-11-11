@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="restaurant">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string" />
+        <xs:element name="adress">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="street" type="xs:string" />
+              <xs:element name="city" type="xs:string" />
+              <xs:element name="state" type="xs:string" />
+              <xs:element name="zipcode" type="xs:unsignedShort" />
+<!--         "zipcode" má omezení "xs:unsignedShort", které říká, že hodnota atributu "zipcode" musí být kladné celé číslo bez znaménka."-->
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="contacts">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="phone" type="xs:string" />
+              <xs:element name="email" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="OpeningHours">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="monday-friday" type="xs:string" />
+              <xs:element name="saturday" type="xs:string" />
+              <xs:element name="sunday" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="reservation">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="table">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="capacity" type="xs:unsignedByte" />
+<!--                "capacity" má omezení "xs:unsignedByte", které říká, že hodnota elementu "capacity" musí být kladné celé číslo -->
+                    <xs:element name="description" type="xs:string" />
+                    <xs:element name="available" type="xs:string" />
+                  </xs:sequence>
+                  <xs:attribute name="id" type="xs:unsignedByte" use="required" />
+<!--              "id" má omezení "xs:unsignedByte" s použitím atributu "use", který říká, že hodnota atributu "id" musí být kladné celé číslo bez znaménka, a je povinná .-->
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="menu">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="category">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="item">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="name" type="xs:string" />
+                          <xs:element minOccurs="0" name="description" type="xs:string" />
+                          <xs:element name="price" type="xs:string" />
+<!--                       "price" má omezení "xs:string", které říká, že hodnota elementu "price" může být libovolný řetězec.-->
+                          <xs:element minOccurs="0" name="options">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element maxOccurs="unbounded" name="option">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="name" type="xs:string" />
+                                      <xs:element minOccurs="0" name="choices">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" name="choice" type="xs:string" />
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element minOccurs="0" name="price" type="xs:string" />
+                                      <xs:element minOccurs="0" name="Types">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element maxOccurs="unbounded" name="choice" type="xs:string" />
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="xs:unsignedByte" use="required" />
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" name="rating" type="xs:decimal" />
+<!--                       "rating" má omezení "xs:decimal", které říká, že hodnota elementu "rating" musí být číslo s desetinnou čárkou.-->
+                        </xs:sequence>
+                        <xs:attribute name="id" type="xs:unsignedByte" use="required" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
